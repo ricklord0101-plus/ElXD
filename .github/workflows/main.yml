@@ -1,1 +1,51 @@
+name: Bot Discord DDoS Etico
 
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      
+      - name: Clonar repositorio
+        run: |
+          git clone https://github.com/ricklord0101-plus/ElXD.git
+          cd ElXD
+      
+      - name: Configurar token desde Secret
+        run: |
+          cd ElXD
+          echo "${{ secrets.BOT_DC }}" > token.txt
+          echo "Token configurado correctamente"
+      
+      - name: Inicializar modulo Go
+        run: |
+          cd ElXD
+          echo "module bot" > go.mod
+          echo "" >> go.mod
+          echo "go 1.21" >> go.mod
+          echo "" >> go.mod
+          echo "require (" >> go.mod
+          echo "    github.com/bwmarrin/discordgo v0.27.1" >> go.mod
+          echo ")" >> go.mod
+          echo "go.mod creado"
+      
+      - name: Descargar dependencias
+        run: |
+          cd ElXD
+          go mod tidy
+          echo "Dependencias descargadas"
+      
+      - name: Ejecutar bot de Discord
+        run: |
+          cd ElXD
+          echo "Iniciando bot de Discord..."
+          echo "Conectando a Discord real..."
+          echo "Bot listo para comandos .ataque"
+          echo "Ejecutando por 6 horas..."
+          timeout 21600 go run main.go || echo "Tiempo completado - Bot finalizado"
